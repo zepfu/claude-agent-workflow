@@ -173,7 +173,6 @@ install_repo_file "CLAUDE.md"
 install_repo_file "TASKS.md"
 install_repo_file "PROJECT_LOG.md"
 install_repo_file "CLAUDE_SUGGESTIONS.md"
-install_repo_file ".pre-commit-config.yaml"
 
 # .claude/ reference files
 for f in SPEC.md GUIDELINES.md PHASES.md CONTRACTS.md GITHUB_INTEGRATION.md; do

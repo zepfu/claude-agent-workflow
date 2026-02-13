@@ -217,7 +217,7 @@ Each worktree is a full working copy on its own branch. Agents cannot see or int
 
 ### Pre-commit Hooks
 
-Pre-commit hooks are expected on all projects. They catch lint/format issues at `git commit` time, allowing agents to self-correct without coordinator intervention. See GUIDELINES.md for setup.
+Pre-commit hooks are recommended for all projects. They catch lint/format issues at `git commit` time, allowing agents to self-correct without coordinator intervention. Configure hooks appropriate to your project's stack — see GUIDELINES.md for rules.
 
 - Agents MUST fix hook failures and re-commit. Never use `--no-verify`.
 - Hooks are shared across git worktrees (stored in `.git/hooks/`).
