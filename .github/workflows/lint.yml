@@ -1,0 +1,58 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  markdown:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: '**/*.md'
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './scripts'
+
+  structure:
+    name: Template Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate template structure
+        run: |
+          errors=0
+          for f in template/CONVERSION.md template/repo/CLAUDE.md template/repo/.claude/SPEC.md VERSION; do
+            if [ ! -e "$f" ]; then
+              echo "MISSING: $f"
+              errors=$((errors + 1))
+            fi
+          done
+          for d in global/agents global/commands template/repo/.claude template/repo/agent-logs template/repo/logs template/conversion; do
+            if [ ! -d "$d" ]; then
+              echo "MISSING DIR: $d"
+              errors=$((errors + 1))
+            fi
+          done
+          agent_count=$(find global/agents -name "*.md" | wc -l)
+          if [ "$agent_count" -lt 23 ]; then
+            echo "WARNING: Expected 23 agents, found $agent_count"
+          fi
+          command_count=$(find global/commands -name "*.md" | wc -l)
+          if [ "$command_count" -lt 4 ]; then
+            echo "WARNING: Expected 4 commands, found $command_count"
+          fi
+          if [ "$errors" -gt 0 ]; then exit 1; fi
+          echo "All structure checks passed."
