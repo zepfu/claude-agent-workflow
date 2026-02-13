@@ -118,6 +118,18 @@ When all gate-check issues in a milestone are closed, the phase is complete.
 
 IMPORTANT: Every phase gate MUST include a CI health check. No phase transition
 with failing GitHub Actions on main/develop. Use: gh run list --status failure
+
+At every phase gate, also:
+1. Check CLAUDE_SUGGESTIONS.md for outstanding items awaiting operator review.
+   Remind the operator if any are pending — they should be resolved before advancing.
+2. Ask TECH-LEAD and PRODUCT-OWNER for framework feedback:
+   - Are there agent types missing that would have helped this phase?
+   - Are there workflow optimizations that would improve the next phase?
+   - Did any agents hit context limits or get overloaded with reference files?
+   - Were cross-agent contracts clear, or did handoffs cause friction?
+   - Were tasks appropriately scoped and dependencies correctly identified?
+   - Did the template provide adequate structure, or were sections missing?
+   Post actionable feedback to the framework repo's CLAUDE_SUGGESTIONS.md (see Cross-Repo Feedback).
 -->
 
 ### Phase 1 → Phase 2
