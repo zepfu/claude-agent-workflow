@@ -1,0 +1,22 @@
+# WSL Zone.Identifier files
+*:Zone.Identifier
+
+# Package output
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary directories
+tmp/
+temp/
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
