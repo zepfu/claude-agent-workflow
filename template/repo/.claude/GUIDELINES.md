@@ -70,29 +70,13 @@ Hooks are stored in `.git/hooks/` and shared across git worktrees, making them
 compatible with the parallel agent dispatch pattern.
 -->
 
-**Recommended setup:** Use the [`pre-commit`](https://pre-commit.com/) framework.
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-**Starter `.pre-commit-config.yaml`** (customize for your stack):
-
-```yaml
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.1
-    hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
-```
+**Recommended:** Use the [`pre-commit`](https://pre-commit.com/) framework or your stack's equivalent. Configure hooks for your project's linting and formatting tools.
 
 **Rules:**
 - Agents MUST fix hook failures and re-commit. Never use `--no-verify`.
-- Keep hooks fast (lint + format only). Heavy checks (mypy, full test suite) stay in CI.
-- All team members and agents share the same hook configuration via `.pre-commit-config.yaml`.
+- Keep hooks fast (lint + format only). Heavy checks (type checking, full test suite) stay in CI.
+- All team members and agents share the same hook configuration.
+- Hooks are stored in `.git/hooks/` and shared across git worktrees.
 
 ## Testing Strategy
 
