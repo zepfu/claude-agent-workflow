@@ -49,4 +49,4 @@ jobs:
           files: project-orchestrator-v${{ steps.version.outputs.version }}.zip
           generate_release_notes: true
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(github.ref_name, '-rc') }}
