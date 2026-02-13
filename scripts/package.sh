@@ -21,6 +21,16 @@ if ! command -v zip &>/dev/null; then
     exit 1
 fi
 
+# Clean up prior zip files
+shopt -s nullglob
+for old_zip in "$REPO_ROOT"/project-orchestrator-v*.zip; do
+    if [[ "$(basename "$old_zip")" != "$OUTPUT_NAME" ]]; then
+        echo "Removing old package: $(basename "$old_zip")"
+        rm "$old_zip"
+    fi
+done
+shopt -u nullglob
+
 # Validate source structure
 echo "Validating source files..."
 errors=0
@@ -52,6 +62,11 @@ cp -r "$TEMPLATE_DIR/"* "$STAGING_DIR/"
 
 # Copy global/ from repo root (not duplicated in template/)
 cp -r "$REPO_ROOT/global" "$STAGING_DIR/global"
+
+# Copy init.sh to zip root
+if [[ -f "$TEMPLATE_DIR/init.sh" ]]; then
+    cp "$TEMPLATE_DIR/init.sh" "$STAGING_DIR/init.sh"
+fi
 
 # Count contents
 agent_count=$(find "$STAGING_DIR/global/agents" -name "*.md" | wc -l)
