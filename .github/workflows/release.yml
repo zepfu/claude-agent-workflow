@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify VERSION file matches tag
+        run: |
+          file_version=$(cat VERSION)
+          tag_version="${{ steps.version.outputs.version }}"
+          if [ "$file_version" != "$tag_version" ]; then
+            echo "ERROR: VERSION file ($file_version) does not match tag ($tag_version)"
+            exit 1
+          fi
+
+      - name: Run validation
+        run: |
+          errors=0
+          for f in template/CONVERSION.md template/repo/CLAUDE.md template/repo/.claude/SPEC.md VERSION; do
+            if [ ! -e "$f" ]; then echo "MISSING: $f"; errors=$((errors + 1)); fi
+          done
+          for d in global/agents global/commands template/repo/.claude template/repo/agent-logs template/repo/logs template/conversion; do
+            if [ ! -d "$d" ]; then echo "MISSING DIR: $d"; errors=$((errors + 1)); fi
+          done
+          if [ "$errors" -gt 0 ]; then exit 1; fi
+          echo "Validation passed."
+
+      - name: Build package
+        run: bash scripts/package.sh
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: project-orchestrator-v${{ steps.version.outputs.version }}.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
