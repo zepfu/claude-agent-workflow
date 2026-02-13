@@ -215,6 +215,13 @@ main       ← Protected. Latest stable.
 
 Each worktree is a full working copy on its own branch. Agents cannot see or interfere with each other's changes.
 
+### Pre-commit Hooks
+
+Pre-commit hooks are expected on all projects. They catch lint/format issues at `git commit` time, allowing agents to self-correct without coordinator intervention. See GUIDELINES.md for setup.
+
+- Agents MUST fix hook failures and re-commit. Never use `--no-verify`.
+- Hooks are shared across git worktrees (stored in `.git/hooks/`).
+
 ### Commits (Conventional)
 `<type>(<scope>): <description>`
 Types: feat, fix, refactor, test, docs, chore, ci, perf, security
@@ -417,26 +424,40 @@ Concrete, measurable goals for the initial launch.
 
 ## Cross-Repo Feedback
 
-> When running this framework on a project, teams may discover workflow improvements, missing conventions, or template gaps. These discoveries should flow back to the framework repository for incorporation into future releases.
+> When running this framework on a project, teams may discover workflow improvements, missing conventions, or template gaps. These discoveries should flow back to the framework repository as **suggestions** so the framework maintainer can review and approve them.
 
 ### Posting Feedback
 
-Add an entry to the **framework repository's** `TASKS.md` (not this project's):
+Add an entry to the **framework repository's** `CLAUDE_SUGGESTIONS.md` (not TASKS.md — suggestions keep the operator in the approval loop):
 
 ```
-- [ ] **PRIORITY:[X]** Workflow optimization: [description]. **Origin: [project-name].**
-  **Problem:** [what went wrong or what's missing]
-  **Proposed change:** [what should change in the template]
-  **Reference implementation:** [if you solved it locally, point to the file/lines]
+- [ ] [CRITICALITY] Workflow optimization: [description] — [PROPOSER] (via [AGENT]). **Origin: [project-name].**
+  **File:** [target template file] → [section]
+  **Change:** [exact edit to apply]
+  **Reason:** [what went wrong or what's missing]
+  **Reference implementation:** [if solved locally, point to file/lines]
 ```
+
+The framework maintainer reviews with `[Y]`/`[N]`/`[E]` like any other suggestion.
+
+### When to Post Feedback
+
+Feedback is solicited at two natural checkpoints:
+- **`/stop`** — TECH-LEAD and PRODUCT-OWNER are asked about agent gaps, workflow optimizations, context pressure, contract friction, task scoping, and template gaps
+- **Phase gates** — Before advancing, review whether the framework itself needs updates
 
 ### What to Feed Back
 
-- Missing agent instructions that caused confusion
+- Missing agent types or insufficient agent instructions
 - Convention gaps discovered during parallel dispatch
 - Template sections that needed project-specific customization beyond the placeholders
 - Worktree or process issues discovered under real load
 - Suggestion patterns that recur across projects
+- Workflow inefficiencies or confusing process steps
+- Context window pressure — agents hitting limits or needing compaction
+- Contract friction — missing, ambiguous, or incorrect cross-agent interfaces
+- Task scoping issues — tasks that consistently balloon or have missed dependencies
+- Reference file overload — agents given too many or too few files at dispatch
 
 ### What NOT to Feed Back
 

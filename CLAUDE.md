@@ -383,24 +383,35 @@ Before adding a suggestion to CLAUDE_SUGGESTIONS.md, check `logs/REJECTED_SUGGES
 
 ## Cross-Repo Feedback
 
-> Projects using this framework post workflow optimizations, convention gaps, and template issues back to this repo's TASKS.md. This is how the framework improves from real-world usage.
+> Projects using this framework post workflow optimizations, convention gaps, and template issues back to **this repo's `CLAUDE_SUGGESTIONS.md`**. Using suggestions (not tasks) keeps the operator in the approval loop via `[Y]`/`[N]`/`[E]`.
 
 ### Format
 
 ```
-- [ ] **PRIORITY:[X]** Workflow optimization: [description]. **Origin: [project-name].**
-  **Problem:** [what went wrong or what's missing]
-  **Proposed change:** [what should change in the template]
-  **Reference implementation:** [if solved locally, point to the file/lines]
+- [ ] [CRITICALITY] Workflow optimization: [description] — [PROPOSER] (via [AGENT]). **Origin: [project-name].**
+  **File:** [target template file] → [section]
+  **Change:** [exact edit to apply]
+  **Reason:** [what went wrong or what's missing]
+  **Reference implementation:** [if solved locally, point to file/lines]
 ```
+
+### When Feedback Is Solicited
+
+- **`/stop`** — TECH-LEAD and PRODUCT-OWNER are asked about agent gaps, workflow optimizations, context pressure, contract friction, task scoping, and template gaps
+- **Phase gates** — Before advancing, review whether the framework itself needs updates
 
 ### What to Feed Back
 
-- Missing agent instructions that caused confusion
+- Missing agent types or insufficient agent instructions
 - Convention gaps discovered during parallel dispatch
 - Template sections that needed project-specific customization beyond the placeholders
 - Worktree or process issues discovered under real load
 - Suggestion patterns that recur across projects
+- Workflow inefficiencies or confusing process steps
+- Context window pressure — agents hitting limits or needing compaction
+- Contract friction — missing, ambiguous, or incorrect cross-agent interfaces
+- Task scoping issues — tasks that consistently balloon or have missed dependencies
+- Reference file overload — agents given too many or too few files at dispatch
 
 ### What NOT to Feed Back
 

@@ -66,6 +66,27 @@ Write new suggestions to `CLAUDE_SUGGESTIONS.md` with:
   **Reason:** rationale
 ```
 
+## Step 6b: Solicit Framework Feedback
+
+Ask TECH-LEAD and PRODUCT-OWNER:
+
+1. **Agent gaps:** Were there moments this session where a specialist agent type was missing or an existing agent's instructions were insufficient? What agent or instruction change would have helped?
+2. **Workflow optimizations:** Did any part of the orchestration process feel inefficient, confusing, or error-prone? What would make the next session smoother?
+3. **Context pressure:** Did any agent hit context window limits or require compaction? Were agents given too many reference files, or not enough?
+4. **Contract friction:** Were there cross-agent handoffs where a contract was missing, ambiguous, or incorrect? Did agents have to discover interfaces that should have been explicit in dispatch?
+5. **Task scoping:** Were tasks appropriately scoped, or did they consistently balloon? Were dependencies between tasks correctly identified upfront?
+6. **Template gaps:** Did the project need a file, section, or convention the template didn't provide? Were template placeholders clear enough to customize?
+
+If feedback is actionable, write it as a suggestion to the **framework repository's** `CLAUDE_SUGGESTIONS.md` (not this project's) using the cross-repo feedback format. This ensures the framework maintainer reviews and approves before changes are incorporated.
+
+## Step 6c: Outstanding Suggestion Reminder
+
+Check `CLAUDE_SUGGESTIONS.md` for any `[ ]` items still pending operator review. If there are outstanding items, include a reminder in the session-end summary:
+
+```
+**Operator attention needed:** [N] suggestions in CLAUDE_SUGGESTIONS.md awaiting review ([Y]/[N]/[E]).
+```
+
 ## Step 7: Review Contracts
 
 Check `.claude/CONTRACTS.md`:

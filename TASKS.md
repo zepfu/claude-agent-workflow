@@ -23,6 +23,13 @@
   **Reference implementation:** See `claude-interceptor/CLAUDE.md` lines 149-181 and 183-191 (already applied to that project).
 - [x] **PRIORITY:HIGH** Add CI/GitHub Actions failure checks to the workflow. **Origin: operator observation.**
   Added: CI status check at session startup (Step 6 in startup sequence), CI gate in mid-session checks (no phase transition with failing CI), `gh run list` in start.md and status.md commands.
+- [x] **PRIORITY:HIGH** Add pre-commit hook recommendation to workflow template. **Origin: claude-interceptor project.**
+  **Problem:** Agents dispatched via `subagent_type=general-purpose` cannot run Python in the sandbox, so they can't self-verify lint/format compliance. Every agent in Phase 3 wave 1 needed post-hoc coordinator fixes for import sorting, line length, and style rules. Pre-commit hooks solve this: when the agent runs `git commit`, the hook runs linting automatically, fails with exact errors, and the agent can self-correct.
+  **Proposed changes:**
+  1. **GUIDELINES.md template → new "Pre-commit Hooks" section:** Recommend `pre-commit` framework with `ruff-pre-commit` for lint + format. Note: mypy stays in CI only (needs project deps, complex in worktrees). Pre-commit hooks are shared across git worktrees via `.git/hooks/`, making them compatible with the worktree dispatch pattern.
+  2. **CLAUDE.md template → "Source Control Process" section:** Add note that pre-commit hooks are expected. Agents should fix hook failures and re-commit, not use `--no-verify`.
+  3. **Template `.pre-commit-config.yaml`:** Provide a starter config with ruff lint + format that projects can customize.
+  **Reference implementation:** See `claude-interceptor/.pre-commit-config.yaml` and `pyproject.toml` dev deps (already applied to that project). Confirmed working in git worktrees during Phase 3 parallel dispatch.
 
 ## Questions for Operator
 

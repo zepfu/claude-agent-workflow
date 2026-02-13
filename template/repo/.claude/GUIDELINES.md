@@ -58,6 +58,42 @@ Language-specific conventions. Add sections for each language in your project.
 - [Error handling patterns]
 - [Logging conventions]
 
+## Pre-commit Hooks
+
+<!--
+Pre-commit hooks catch lint and format issues at commit time. This is especially
+important for agent-dispatched work: when an agent runs `git commit`, the hook
+runs automatically, fails with exact errors, and the agent can self-correct
+without coordinator intervention.
+
+Hooks are stored in `.git/hooks/` and shared across git worktrees, making them
+compatible with the parallel agent dispatch pattern.
+-->
+
+**Recommended setup:** Use the [`pre-commit`](https://pre-commit.com/) framework.
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+**Starter `.pre-commit-config.yaml`** (customize for your stack):
+
+```yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.1
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+```
+
+**Rules:**
+- Agents MUST fix hook failures and re-commit. Never use `--no-verify`.
+- Keep hooks fast (lint + format only). Heavy checks (mypy, full test suite) stay in CI.
+- All team members and agents share the same hook configuration via `.pre-commit-config.yaml`.
+
 ## Testing Strategy
 
 - **Unit tests:** Service layer functions, business logic, pure functions
