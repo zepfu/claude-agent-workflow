@@ -12,6 +12,7 @@ desktop.ini
 # Temporary directories
 tmp/
 temp/
+.claude/
 
 # Editor files
 *.swp
