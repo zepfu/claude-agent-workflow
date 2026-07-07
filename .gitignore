@@ -12,6 +12,8 @@ desktop.ini
 # Temporary directories
 tmp/
 temp/
+.analysis/
+agent-logs/
 .claude/
 
 # Editor files
